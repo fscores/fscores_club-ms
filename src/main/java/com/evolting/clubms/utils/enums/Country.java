@@ -1,4 +1,4 @@
-package com.evolting.clubms.utils;
+package com.evolting.clubms.utils.enums;
 
 public enum Country {
     AFGHANISTAN("AF"),

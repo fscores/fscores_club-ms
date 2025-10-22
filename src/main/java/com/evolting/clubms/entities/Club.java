@@ -3,8 +3,11 @@ package com.evolting.clubms.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +16,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Club {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private Integer foundedYear;
-
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY is good for performance
-    @JoinColumn(name = "league_id")
-    @JsonIgnore // Prevents infinite loops when serializing to JSON
-    private League league;
+    private String avatarUrl;
 
     @ElementCollection
     @CollectionTable(
@@ -33,9 +31,6 @@ public class Club {
             joinColumns = @JoinColumn(name = "club_id")
     )
     @Column(name = "player_id")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Integer> playerIds = new ArrayList<>();
-
-    public String getLeagueName() {
-        return (league != null) ? league.getName() : null;
-    }
 }
