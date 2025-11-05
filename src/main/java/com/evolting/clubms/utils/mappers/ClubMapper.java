@@ -5,6 +5,9 @@ import com.evolting.clubms.dtos.response.ClubResponseDto;
 import com.evolting.clubms.entities.Club;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 @Component
 public class ClubMapper {
     public static Club toEntity(ClubRequestDto dto) {
@@ -21,7 +24,11 @@ public class ClubMapper {
                 .name(entity.getName())
                 .foundedYear(entity.getFoundedYear())
                 .avatarUrl(entity.getAvatarUrl())
-                .playerIds(entity.getPlayerIds())
+                .playerIds(
+                        entity.getPlayerIds() != null
+                                ? new ArrayList<>(entity.getPlayerIds()) // ✅ forces lazy init
+                                : Collections.emptyList()
+                )
                 .build();
     }
 }

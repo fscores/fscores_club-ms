@@ -1,6 +1,8 @@
 package com.evolting.clubms.controllers;
 
 import com.evolting.clubms.dtos.request.ClubRequestDto;
+import com.evolting.clubms.dtos.request.ClubSearchDto;
+import com.evolting.clubms.dtos.response.ApiResponseDto;
 import com.evolting.clubms.dtos.response.ClubResponseDto;
 import com.evolting.clubms.services.ClubService;
 import jakarta.validation.Valid;
@@ -17,16 +19,21 @@ import java.util.List;
 public class ClubController {
     private final ClubService clubService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllClubs(@RequestParam(defaultValue = "0") Integer pageNo,
-                                         @RequestParam(defaultValue = "10") Integer pageSize,
-                                         @RequestParam(defaultValue = "id") String sortBy) {
-        return new ResponseEntity<>(clubService.getAllClubs(pageNo, pageSize, sortBy), HttpStatus.OK);
+    @PostMapping("/search")
+    public ResponseEntity<?> searchPlayer(@RequestBody ClubSearchDto clubSearchDto,
+                                          @RequestParam(defaultValue = "0") Integer pageNo,
+                                          @RequestParam(defaultValue = "10") Integer pageSize,
+                                          @RequestParam(defaultValue = "id") String sortBy) {
+        ApiResponseDto<List<ClubResponseDto>> ret = clubService.searchClub(clubSearchDto, pageNo, pageSize, sortBy);
+        if (ret == null) {
+            return new ResponseEntity<>("Club not found.", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getClubById(@PathVariable Integer id) {
-        ClubResponseDto ret = clubService.getClubById(id);
+        ApiResponseDto<ClubResponseDto> ret = clubService.getClubById(id);
         if (ret == null) {
             return new ResponseEntity<>("Club not found.", HttpStatus.NOT_FOUND);
         }
@@ -35,7 +42,7 @@ public class ClubController {
 
     @PostMapping
     public ResponseEntity<?> createClub(@Valid @RequestBody ClubRequestDto clubRequestDto) {
-        ClubResponseDto ret = clubService.createClub(clubRequestDto);
+        ApiResponseDto<ClubResponseDto> ret = clubService.createClub(clubRequestDto);
         if (ret == null) {
             return new ResponseEntity<>("Fail to register club data.", HttpStatus.BAD_REQUEST);
         }
@@ -44,7 +51,7 @@ public class ClubController {
 
     @PutMapping
     public ResponseEntity<?> updateClub(@Valid @RequestBody ClubRequestDto clubRequestDto) {
-        ClubResponseDto ret = clubService.updateClub(clubRequestDto.getId(), clubRequestDto);
+        ApiResponseDto<ClubResponseDto> ret = clubService.updateClub(clubRequestDto.getId(), clubRequestDto);
         if (ret == null) {
             return new ResponseEntity<>("Fail to update club data.", HttpStatus.BAD_REQUEST);
         }

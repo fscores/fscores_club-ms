@@ -1,6 +1,5 @@
 package com.evolting.clubms.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +24,7 @@ public class Club {
     private Integer foundedYear;
     private String avatarUrl;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "club_player_ids",
             joinColumns = @JoinColumn(name = "club_id")
