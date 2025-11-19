@@ -1,8 +1,8 @@
 package com.evolting.clubms.utils.mappers;
 
-import com.evolting.clubms.dtos.request.ClubRequestDto;
-import com.evolting.clubms.dtos.response.ClubResponseDto;
 import com.evolting.clubms.entities.Club;
+import com.evolting.commonutils.requests.clubs.ClubRequestDto;
+import com.evolting.commonutils.responses.clubs.ClubResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

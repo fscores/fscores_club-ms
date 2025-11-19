@@ -1,9 +1,11 @@
 package com.evolting.clubms.services;
 
-import com.evolting.clubms.dtos.request.ClubRequestDto;
 import com.evolting.clubms.dtos.request.ClubSearchDto;
-import com.evolting.clubms.dtos.response.ApiResponseDto;
-import com.evolting.clubms.dtos.response.ClubResponseDto;
+import com.evolting.commonutils.requests.clubs.ClubRequestDto;
+import com.evolting.commonutils.requests.players.PlayerRequestDto;
+import com.evolting.commonutils.responses.ApiResponseDto;
+import com.evolting.commonutils.responses.clubs.ClubResponseDto;
+import com.evolting.commonutils.responses.players.PlayerResponseDto;
 
 import java.util.List;
 
@@ -13,4 +15,5 @@ public interface ClubService {
     ApiResponseDto<ClubResponseDto> createClub(ClubRequestDto clubRequestDto);
     ApiResponseDto<ClubResponseDto> updateClub(Integer id, ClubRequestDto clubRequestDto);
     ApiResponseDto<Void> deleteClub(Integer id);
+    ApiResponseDto<PlayerResponseDto> addPlayerToClub(Integer clubId, PlayerRequestDto dto);
 }
