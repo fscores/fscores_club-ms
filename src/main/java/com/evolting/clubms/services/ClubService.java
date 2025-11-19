@@ -15,5 +15,7 @@ public interface ClubService {
     ApiResponseDto<ClubResponseDto> createClub(ClubRequestDto clubRequestDto);
     ApiResponseDto<ClubResponseDto> updateClub(Integer id, ClubRequestDto clubRequestDto);
     ApiResponseDto<Void> deleteClub(Integer id);
-    ApiResponseDto<PlayerResponseDto> addPlayerToClub(Integer clubId, PlayerRequestDto dto);
+    ApiResponseDto<PlayerResponseDto> createPlayerAndAddToClub(Integer clubId, PlayerRequestDto request);
+    ApiResponseDto<PlayerResponseDto> addExistingPlayerToClub(Integer clubId, Integer playerId);
+    ApiResponseDto<PlayerResponseDto> changePlayerClub(Integer playerId, Integer newClubId);
 }

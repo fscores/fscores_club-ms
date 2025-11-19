@@ -71,15 +71,48 @@ public class ClubController {
         return ResponseEntity.status(status).body(response);
     }
 
-
-    @PostMapping("/{clubId}/players")
-    public ResponseEntity<ApiResponseDto<PlayerResponseDto>> addPlayerToClub(
+    @PostMapping("/{clubId}/players/new")
+    public ResponseEntity<ApiResponseDto<PlayerResponseDto>> createPlayerAndAddToClub(
             @PathVariable Integer clubId,
-            @RequestBody PlayerRequestDto request
+            @Valid @RequestBody PlayerRequestDto request
     ) {
-        ApiResponseDto<PlayerResponseDto> response = clubService.addPlayerToClub(clubId, request);
+        ApiResponseDto<PlayerResponseDto> response =
+                clubService.createPlayerAndAddToClub(clubId, request);
 
-        HttpStatus status = response.isSuccess() ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+        HttpStatus status = response.isSuccess()
+                ? HttpStatus.CREATED
+                : HttpStatus.BAD_REQUEST;
+
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @PostMapping("/{clubId}/players/{playerId}")
+    public ResponseEntity<ApiResponseDto<PlayerResponseDto>> addExistingPlayerToClub(
+            @PathVariable Integer clubId,
+            @PathVariable Integer playerId
+    ) {
+        ApiResponseDto<PlayerResponseDto> response =
+                clubService.addExistingPlayerToClub(clubId, playerId);
+
+        HttpStatus status = response.isSuccess()
+                ? HttpStatus.OK
+                : HttpStatus.BAD_REQUEST;
+
+        return ResponseEntity.status(status).body(response);
+    }
+
+
+    @PostMapping("/{newClubId}/players/{playerId}/change")
+    public ResponseEntity<ApiResponseDto<PlayerResponseDto>> changePlayerClub(
+            @PathVariable Integer playerId,
+            @PathVariable Integer newClubId
+    ) {
+        ApiResponseDto<PlayerResponseDto> response =
+                clubService.changePlayerClub(playerId, newClubId);
+
+        HttpStatus status = response.isSuccess()
+                ? HttpStatus.OK
+                : HttpStatus.BAD_REQUEST;
 
         return ResponseEntity.status(status).body(response);
     }
